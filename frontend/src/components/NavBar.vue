@@ -54,27 +54,37 @@
       <!-- Menu Items, only visible if menu is open -->
       <ul v-if="isMenuOpen" class="space-y-4">
         <li>
-          <RouterLink to="/" class="hover:text-green-500">Overview</RouterLink>
+          <RouterLink to="/" class="flex items-center hover:text-green-500">
+            <i class="fa fa-tachometer-alt mr-3"></i> Overview
+          </RouterLink>
         </li>
         <li>
-          <RouterLink to="/about" class="hover:text-green-500"
-            >Task-Lists</RouterLink
-          >
+          <RouterLink
+            to="/about"
+            class="flex items-center hover:text-green-500">
+            <i class="fa fa-tasks mr-3"></i> Task-Lists
+          </RouterLink>
         </li>
         <li>
-          <RouterLink to="/services" class="hover:text-green-500"
-            >Project Overview</RouterLink
-          >
+          <RouterLink
+            to="/services"
+            class="flex items-center hover:text-green-500">
+            <i class="fa fa-project-diagram mr-3"></i> Project Overview
+          </RouterLink>
         </li>
         <li>
-          <RouterLink to="/contact" class="hover:text-green-500"
-            >Calender</RouterLink
-          >
+          <RouterLink
+            to="/contact"
+            class="flex items-center hover:text-green-500">
+            <i class="fa fa-calendar-alt mr-3"></i> Calendar
+          </RouterLink>
         </li>
         <li>
-          <RouterLink to="/contact" class="hover:text-green-500"
-            >Setting</RouterLink
-          >
+          <RouterLink
+            to="/contact"
+            class="flex items-center hover:text-green-500">
+            <i class="fa fa-cogs mr-3"></i> Settings
+          </RouterLink>
         </li>
       </ul>
     </div>
