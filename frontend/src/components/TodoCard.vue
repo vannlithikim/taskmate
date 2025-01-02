@@ -3,17 +3,20 @@
     <!-- Task Cards Container -->
     <div
       class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <!-- Static Task Cards -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl">
-        <h3 class="font-semibold text-xl mb-2">Task 1</h3>
+      <!-- Dynamically Render Task Cards -->
+      <div
+        v-for="item in tasks"
+        :key="item.id"
+        :style="{ backgroundColor: getRandomColorWithOpacity() }"
+        class="p-6 rounded-lg shadow-md hover:shadow-xl">
+        <h3 class="font-semibold text-xl mb-2">{{ item.title }}</h3>
         <p class="text-gray-700 py-4">
-          This is the first task in your to-do list.
+          {{ item.descriptions }}
         </p>
-        <p class="text-gray-500 text-sm">1/2/2025</p>
 
         <!-- Action Buttons with Outline Icons -->
         <div class="mt-4 flex justify-end">
-          <!-- Edit Button with Custom SVG Icon (no stroke) -->
+          <!-- Edit Button with Custom SVG Icon -->
           <button
             class="p-2 text-blue-500 hover:bg-blue-100 focus:outline-none">
             <!-- Custom Edit SVG Icon -->
@@ -31,8 +34,10 @@
             </svg>
           </button>
 
-          <!-- Delete Button with Custom SVG Icon (no stroke) -->
-          <button class="p-2 text-red-500 hover:bg-red-100 focus:outline-none">
+          <!-- Delete Button with Custom SVG Icon -->
+          <button
+            @click="deleteTask(item.id)"
+            class="p-2 text-red-500 hover:bg-red-100 focus:outline-none">
             <!-- Custom Delete SVG Icon -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +59,60 @@
 </template>
 
 <script setup>
-// No dynamic functionality needed, just a simple static layout
+import { ref, onMounted } from "vue";
+
+// Function to generate random modern color with lower opacity
+function getRandomColorWithOpacity() {
+  // Generate a random hue (0-360 degrees on the color wheel)
+  const hue = Math.floor(Math.random() * 360);
+
+  // Random saturation (60-100% for more vibrant colors)
+  const saturation = Math.floor(Math.random() * 40) + 60;
+
+  // Random lightness (40-60% for balanced colors)
+  const lightness = Math.floor(Math.random() * 20) + 40;
+
+  // Set the opacity to exactly 30% (0.3)
+  return `hsla(${hue}, ${saturation}%, ${lightness}%, 0.3)`;
+}
+
+const tasks = ref([]); // Ref to store tasks
+
+// Fetch data from backend on mount
+onMounted(async () => {
+  try {
+    const response = await fetch("http://localhost:3000/api/get-data"); // Fetching from the backend
+    const data = await response.json();
+    tasks.value = data.data; // The data object will have the 'data' property
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+  }
+});
+
+// Function to handle task deletion
+const deleteTask = async (taskId) => {
+  try {
+    // Send a DELETE request to remove the task
+    const response = await fetch(
+      `http://localhost:3000/api/delete-item/${taskId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (response.ok) {
+      console.log(`Task with ID: ${taskId} deleted successfully.`);
+      // Remove the deleted task from the tasks array to update the UI
+      tasks.value = tasks.value.filter((task) => task.id !== taskId);
+    } else {
+      console.error("Error deleting task:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
+};
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+// Custom styles can go here
+</style>
