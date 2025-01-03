@@ -6,7 +6,7 @@ const app = express();
 const PORT = 3000; // Your backend server port
 
 const DIRECTUS_API_URL = "http://localhost:8055"; // Directus API URL
-const API_KEY = "ktLgvALkZDl5iCa7H-iRO-9gft3yh2Zn"; // Your Directus admin API key
+const API_KEY = "4OIxQjZtI9a5GVn67ZxobbfEqoMNKjdD"; // Your Directus admin API key
 
 // Middleware to parse JSON
 app.use(express.json());
